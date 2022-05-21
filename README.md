@@ -1,3 +1,7 @@
+## TODO
+- [ ] styles.css  (also, should it be changed to scss?)
+
+## Deets
 Insert GIF/Video here of functionality.
 
 Pasting 2+ links results in a collapsed callout named "Links" to be automatically generated with an "Open" button, which will automatically open the links within.

@@ -4,8 +4,7 @@ import {
 	BrowserTabsSettingTab,
 	DEFAULT_SETTINGS,
 } from "./settings";
-import { CheckIf } from "checkif";
-// Remember to rename these classes and interfaces!
+
 
 interface PasteFunction {
 	(this: HTMLElement, ev: ClipboardEvent): void;
@@ -17,9 +16,9 @@ export default class BrowserTabs extends Plugin {
 	pasteFunction: PasteFunction;
 
 	async onload() {
-		this.registerInterval(
-			window.setInterval(this.injectButtons.bind(this), 1000)
-		);
+		// this.registerInterval(
+		// 	window.setInterval(this.injectButtons.bind(this), 1000)
+		// );
 
 
 		console.log("loading obsidian-browser-tabs")
@@ -43,24 +42,24 @@ export default class BrowserTabs extends Plugin {
 	// are there 2+ lines
 	// does each line have a ://
 
-	injectButtons(){
-		this.addCopyButtons();
-	}
-
-	addCopyButtons(){
-		const links_callouts = document.querySelectorAll('[data-callout="links"]');
-		links_callouts.forEach(function (curr){
-			const button = document.createElement('button');
-			button.className = 'open-links-button';
-			button.type = 'button';
-			button.innerText = 'Open';
-			button.addEventListener('click', function(){
-				console.log("Click");
-			});
-			//curr.append(button); TODO race condition, just keeping adding. so this just keeps running...addCopyButtons needs to only run once on paste and once on page load...
-
-		});
-	}
+	// injectButtons(){
+	// 	this.addCopyButtons();
+	// }
+	//
+	// addCopyButtons(){
+	// 	const links_callouts = document.querySelectorAll('[data-callout="links"]');
+	// 	links_callouts.forEach(function (curr){
+	// 		const button = document.createElement('button');
+	// 		button.className = 'open-links-button';
+	// 		button.type = 'button';
+	// 		button.innerText = 'Open';
+	// 		button.addEventListener('click', function(){
+	// 			console.log("Click");
+	// 		});
+	// 		//curr.append(button); TODO race condition, just keeping adding. so this just keeps running...addCopyButtons needs to only run once on paste and once on page load...
+	//
+	// 	});
+	// }
 
 
 
@@ -140,7 +139,6 @@ export default class BrowserTabs extends Plugin {
 	// }
 
 	async pasteUrlList(clipboard: ClipboardEvent): Promise<void> {
-		let i;
 		let editor = this.getEditor();
 		if (!editor) return;
 		let clipboardText = clipboard.clipboardData.getData("text/plain");
@@ -150,8 +148,8 @@ export default class BrowserTabs extends Plugin {
 		// at this point we've established clipboardText > 1 line
 		// for each line, check if THAT LINE contains :// aka /:\/\// in regex
 
-		var lines = clipboardText.split('\n');
-		for(i = 0; i < lines.length; i++){
+		const lines = clipboardText.split('\n');
+		for(let i = 0; i < lines.length; i++){
 			const check_link = /:\/\//.exec(lines[i]); //if check_link is null, :// wasn't found
 			if (check_link == null && lines[i]!=""&& lines[i]!="\n") {
 				console.log("2+ lines, but a non-empty line !=\n doesn't have ://");
@@ -164,7 +162,7 @@ export default class BrowserTabs extends Plugin {
 		clipboard.stopPropagation();
 		clipboard.preventDefault();
 		let new_paste = ">[!LINKS]-\n";
-		for(i = 0; i< lines.length; i++){
+		for(let i = 0; i< lines.length; i++){
 			if (lines[i]!="" && lines[i]!="\n") {
 				new_paste += ">" + lines[i] + "\n";
 			}
