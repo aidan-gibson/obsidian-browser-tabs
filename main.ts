@@ -48,23 +48,40 @@ export default class BrowserTabs extends Plugin {
 	}
 
 	addCopyButtons(){
-		document.querySelectorAll('[data-callout="links"]').forEach(function (codeBlock){
-			var pre = codeBlock;//.parentNode;
-			// Dont add more than once
-			if (pre.parentNode.classList.contains('has-copy-button')) {
-				return;
-			}
-			pre.parentNode.classList.add( 'has-copy-button' );
+		const links_callouts = document.querySelectorAll('[data-callout="links"]');
+		links_callouts.forEach(function (curr){
+			const button = document.createElement('button');
+			button.className = 'open-links-button';
+			button.type = 'button';
+			button.innerText = 'Open';
+			button.addEventListener('click', function(){
+				console.log("Click");
+			});
+			//curr.append(button); TODO race condition, just keeping adding. so this just keeps running...addCopyButtons needs to only run once on paste and once on page load...
 
-			pre.parentNode.addEventListener('click', function() {
-				console.log("hello");
-				var links = pre.getElementsByTagName("a");
-				for(var i = 0;i<links.length;i++){
-					window.open(links[i].getAttribute("href"));
-					console.log('yo');
-				}
+		});
+	}
 
-			})
+
+
+	// addCopyButtons(){
+	// 	document.querySelectorAll('[data-callout="links"]').forEach(function (codeBlock){
+	// 		var pre = codeBlock;//.parentNode;
+	// 		// Dont add more than once
+	// 		if (pre.parentNode.classList.contains('has-copy-button')) {
+	// 			return;
+	// 		}
+	// 		pre.parentNode.classList.add( 'has-copy-button' );
+	//
+	// 		pre.parentNode.addEventListener('click', function() {
+				// console.log("hello");
+				// var links = pre.getElementsByTagName("a");
+				// for(var i = 0;i<links.length;i++){
+				// 	window.open(links[i].getAttribute("href"));
+				// 	console.log('yo');
+				// }
+
+			// })
 			// var button = document.createElement('button');
 
 			// button.className = 'copy-code-button';
@@ -87,8 +104,8 @@ export default class BrowserTabs extends Plugin {
 
 
 
-		});
-	}
+	// 	});
+	// }
 	// addCopyButtons(){
 	// 	document.querySelectorAll('[data-callout="links"]').forEach(function (codeBlock){
 	// 		var pre = codeBlock;//.parentNode;

@@ -1,20 +1,15 @@
-# Obsidian Sample Plugin
+Insert GIF/Video here of functionality.
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Pasting 2+ links results in a collapsed callout named "Links" to be automatically generated with an "Open" button, which will automatically open the links within.
 
-This project uses Typescript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definition format, which contains TSDoc comments describing what it does.
+I'm using :// for link recognition, as I want it to work for deeplinks like `obsidian://open?vault=test` as well.  
 
-**Note:** The Obsidian API is still in early alpha and is subject to change at any time!
+Only developing for Live Preview.
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Changes the default font color to red using `styles.css`.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
 
+
+Recommended Workflow:
+Use [Copy All Urls](https://chrome.google.com/webstore/detail/copy-all-urls/djdmadneanknadilpjiknlnanaolmbfk?hl=en) Chrome Plugin, hit `Alt+c` to copy all links from window to clipboard, paste them in Obsidian.
 ## First time developing plugins?
 
 Quick starting guide for new plugin devs:
