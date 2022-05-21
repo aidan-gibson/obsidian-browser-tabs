@@ -1,84 +1,168 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-
+import {
+	BrowserTabsSettings,
+	BrowserTabsSettingTab,
+	DEFAULT_SETTINGS,
+} from "./settings";
+import { CheckIf } from "checkif";
 // Remember to rename these classes and interfaces!
 
-interface MyPluginSettings {
-	mySetting: string;
+interface PasteFunction {
+	(this: HTMLElement, ev: ClipboardEvent): void;
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
-}
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+export default class BrowserTabs extends Plugin {
+	settings: BrowserTabsSettings;
+	pasteFunction: PasteFunction;
 
 	async onload() {
+		this.registerInterval(
+			window.setInterval(this.injectButtons.bind(this), 1000)
+		);
+
+
+		console.log("loading obsidian-browser-tabs")
 		await this.loadSettings();
 
-		// This creates an icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
-		});
-		// Perform additional things with the ribbon
-		ribbonIconEl.addClass('my-plugin-ribbon-class');
+		// Listen to paste event
+		this.pasteFunction = this.pasteUrlList.bind(this);
 
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status Bar Text');
+		this.registerEvent(
+			this.app.workspace.on("editor-paste", this.pasteFunction)
 
-		// This adds a simple command that can be triggered anywhere
-		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
-			callback: () => {
-				new SampleModal(this.app).open();
-			}
-		});
-		// This adds an editor command that can perform some operation on the current editor instance
-		this.addCommand({
-			id: 'sample-editor-command',
-			name: 'Sample editor command',
-			editorCallback: (editor: Editor, view: MarkdownView) => {
-				console.log(editor.getSelection());
-				editor.replaceSelection('Sample Editor Command');
-			}
-		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
-		this.addCommand({
-			id: 'open-sample-modal-complex',
-			name: 'Open sample modal (complex)',
-			checkCallback: (checking: boolean) => {
-				// Conditions to check
-				const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (markdownView) {
-					// If checking is true, we're simply "checking" if the command can be run.
-					// If checking is false, then we want to actually perform the operation.
-					if (!checking) {
-						new SampleModal(this.app).open();
-					}
+		);
 
-					// This command will only show up in Command Palette when the check function returns true
-					return true;
-				}
-			}
-		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new BrowserTabsSettingTab(this.app, this));
 
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
-		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
-			console.log('click', evt);
+	}
+	// on paste...
+	// identify if list of 2+ links or not (do I surround with button or not)
+	// are there 2+ lines
+	// does each line have a ://
+
+	injectButtons(){
+		this.addCopyButtons();
+	}
+
+	addCopyButtons(){
+		document.querySelectorAll('[data-callout="links"]').forEach(function (codeBlock){
+			var pre = codeBlock;//.parentNode;
+			// Dont add more than once
+			if (pre.parentNode.classList.contains('has-copy-button')) {
+				return;
+			}
+			pre.parentNode.classList.add( 'has-copy-button' );
+
+			pre.parentNode.addEventListener('click', function() {
+				console.log("hello");
+				var links = pre.getElementsByTagName("a");
+				for(var i = 0;i<links.length;i++){
+					window.open(links[i].getAttribute("href"));
+					console.log('yo');
+				}
+
+			})
+			// var button = document.createElement('button');
+
+			// button.className = 'copy-code-button';
+			// button.type = 'button';
+			// button.innerText = 'Copy';
+			//
+			// button.addEventListener('click', function () {
+			// 	console.log("copy");
+			// 	// //pre child class "callout-content"
+			// 	// let content = pre.querySelector('[class="callout-content"]');
+			// 	// //window.open(url) for every url, but substring[1] to get rid of >
+			// 	// content.querySelectorAll('[class="external-link"]').forEach(function(yep){
+			// 	//
+			// 	// });
+			//
+			// });
+			//
+			// pre.append(button);
+			//pre.parentNode.append(button);
+
+
+
 		});
+	}
+	// addCopyButtons(){
+	// 	document.querySelectorAll('[data-callout="links"]').forEach(function (codeBlock){
+	// 		var pre = codeBlock;//.parentNode;
+	// 		// Dont add more than once
+	// 		if (pre.parentNode.classList.contains('has-copy-button')) {
+	// 			return;
+	// 		}
+	// 		pre.parentNode.classList.add( 'has-copy-button' );
+	//
+	// 		var button = document.createElement('button');
+	// 		button.className = 'copy-code-button';
+	// 		button.type = 'button';
+	// 		button.innerText = 'Copy';
+	//
+	// 		button.addEventListener('click', function () {
+	// 			console.log("copy");
+	// 			// //pre child class "callout-content"
+	// 			// let content = pre.querySelector('[class="callout-content"]');
+	// 			// //window.open(url) for every url, but substring[1] to get rid of >
+	// 			// content.querySelectorAll('[class="external-link"]').forEach(function(yep){
+	// 			//
+	// 			// });
+	//
+	// 		});
+	//
+	// 		pre.append(button);
+	// 		//pre.parentNode.append(button);
+	//
+	//
+	//
+	// 	});
+	// }
 
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
+	async pasteUrlList(clipboard: ClipboardEvent): Promise<void> {
+		let i;
+		let editor = this.getEditor();
+		if (!editor) return;
+		let clipboardText = clipboard.clipboardData.getData("text/plain");
+		const line_br = /\r|\n/.exec(clipboardText); //if \r or \n NOT there, line_br == null and it's one line
+		if (clipboardText == null || clipboardText == "" || line_br == null) return; //if no line_br, leave. I don't want it to activate for one link
+
+		// at this point we've established clipboardText > 1 line
+		// for each line, check if THAT LINE contains :// aka /:\/\// in regex
+
+		var lines = clipboardText.split('\n');
+		for(i = 0; i < lines.length; i++){
+			const check_link = /:\/\//.exec(lines[i]); //if check_link is null, :// wasn't found
+			if (check_link == null && lines[i]!=""&& lines[i]!="\n") {
+				console.log("2+ lines, but a non-empty line !=\n doesn't have ://");
+				return;//if :// wasn't found AND it wasn't an empty line or a \n, cancel this entire function, it isn't a valid url list
+			}
+
+		}
+		console.log("Valid URL List."); //now surround it with button whatever
+		// We've decided to handle the paste, stop propagation to the default handler.
+		clipboard.stopPropagation();
+		clipboard.preventDefault();
+		let new_paste = ">[!LINKS]-\n";
+		for(i = 0; i< lines.length; i++){
+			if (lines[i]!="" && lines[i]!="\n") {
+				new_paste += ">" + lines[i] + "\n";
+			}
+		}
+		editor.replaceSelection(new_paste);
+	}
+
+	private getEditor(): Editor {
+		let activeLeaf = this.app.workspace.getActiveViewOfType(MarkdownView);
+		if (activeLeaf == null) return;
+		return activeLeaf.editor;
 	}
 
 	onunload() {
+		console.log("unloading obsidian-browser-tabs");
 
 	}
 
@@ -88,50 +172,5 @@ export default class MyPlugin extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-	}
-}
-
-class SampleModal extends Modal {
-	constructor(app: App) {
-		super(app);
-	}
-
-	onOpen() {
-		const {contentEl} = this;
-		contentEl.setText('Woah!');
-	}
-
-	onClose() {
-		const {contentEl} = this;
-		contentEl.empty();
-	}
-}
-
-class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
-
-	constructor(app: App, plugin: MyPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-		const {containerEl} = this;
-
-		containerEl.empty();
-
-		containerEl.createEl('h2', {text: 'Settings for my awesome plugin.'});
-
-		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
-			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
-				.onChange(async (value) => {
-					console.log('Secret: ' + value);
-					this.plugin.settings.mySetting = value;
-					await this.plugin.saveSettings();
-				}));
 	}
 }
