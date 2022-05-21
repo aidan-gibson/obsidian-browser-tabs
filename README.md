@@ -9,22 +9,31 @@ Only developing for Live Preview.
 
 
 Recommended Workflow:
-Use [Copy All Urls](https://chrome.google.com/webstore/detail/copy-all-urls/djdmadneanknadilpjiknlnanaolmbfk?hl=en) Chrome Plugin, hit `Alt+c` to copy all links from window to clipboard, paste them in Obsidian.
-## First time developing plugins?
+Use [Copy All Urls](https://chrome.google.com/webstore/detail/copy-all-urls/djdmadneanknadilpjiknlnanaolmbfk?hl=en) Chrome Plugin, hit `Alt+c` to copy all links from window to clipboard, paste them in Obsidian. Use chrome://extensions/shortcuts to change this shortcut.
 
-Quick starting guide for new plugin devs:
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+
+## Install
+Unzip into `.obsidian/plugins`.
+
+Contributions are welcome. Follow build instructions below.
+
+## Build
+Clone into `.obsidian/plugins` testing vault. 
+
+Node.js is javascript runtime enviro.
+
+npm is package manager for Node.js
+`npm i` aka `npm install` downloads all packages listed as dependencies in package.json.
+
+Run `npm i`.
+
+`npm run dev` compiles main.ts -> main.js, live-updates as you code.
+
+Use Hot Reload Obsidian plugin in test vault, which will auto-reload plugins when their files are changed.
 
 ## Releasing new releases
+For updates to the Obsidian API run `npm update` under your repo folder.
 
 - Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
 - Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
@@ -35,18 +44,13 @@ Quick starting guide for new plugin devs:
 > You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
 > The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
 
-## Adding your plugin to the community plugin list
+## Adding your plugin to the community plugin list TODO
 
 - Check https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md
 - Publish an initial version.
 - Make sure you have a `README.md` file in the root of your repo.
 - Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
 
-## How to use
-
-- Clone this repo.
-- `npm i` or `yarn` to install dependencies
-- `npm run dev` to start compilation in watch mode.
 
 ## Manually installing the plugin
 
