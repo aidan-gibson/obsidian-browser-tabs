@@ -11,7 +11,7 @@ export interface BrowserTabsSettings {
   // enhanceDefaultPaste: boolean;
 }
 
-// export const DEFAULT_SETTINGS: BrowserTabsSettings = {
+export const DEFAULT_SETTINGS: BrowserTabsSettings = {
 //   regex:
 //     /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/i,
 //   lineRegex:
@@ -23,7 +23,7 @@ export interface BrowserTabsSettings {
 //   imageRegex: /\.(gif|jpe?g|tiff?|png|webp|bmp|tga|psd|ai)$/i,
 //   shouldReplaceSelection: true,
 //   enhanceDefaultPaste: true,
-// };
+};
 
 export class BrowserTabsSettingTab extends PluginSettingTab {
   plugin: BrowserTabs;

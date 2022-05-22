@@ -1,5 +1,8 @@
 ## TODO
 - [ ] styles.css  (also, should it be changed to scss?)
+- [ ] settings.ts
+- [ ] should anything be try/catch?
+- [ ] automated tests
 
 ## Deets
 Insert GIF/Video here of functionality.
