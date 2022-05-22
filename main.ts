@@ -1,12 +1,12 @@
 import {
-	App,
+	//App,
 	Editor,
 	MarkdownView,
-	Modal,
-	Notice,
+	//Modal,
+	//Notice,
 	Plugin,
-	PluginSettingTab,
-	Setting,
+	//PluginSettingTab,
+	//Setting,
 } from "obsidian";
 import {
 	BrowserTabsSettings,
@@ -28,10 +28,6 @@ export default class BrowserTabs extends Plugin {
 	click: Click;
 
 	async onload() {
-		// this.registerInterval(
-		// 	window.setInterval(this.injectButtons.bind(this), 1000) //this runs every second--do not use this
-		// );
-
 		console.log("loading obsidian-browser-tabs");
 		await this.loadSettings();
 
@@ -65,116 +61,26 @@ export default class BrowserTabs extends Plugin {
 		) {
 			mouse.stopPropagation(); //vs stop immediate prop?
 			mouse.preventDefault();
-			const calloutContent =
-				clickTarget.parentNode.parentNode.querySelector(
-					'[class="callout-content"]'
-				); //within <p> all links there
-			const linksToOpen = calloutContent.querySelectorAll(
-				'[class="external-link"]'
-			);
-			linksToOpen.forEach(function (curr) {
-				console.log(curr.innerHTML);
-				window.open(curr.innerHTML);
-			});
+			if (
+				clickTarget.parentNode != null &&
+				clickTarget.parentNode.parentNode != null
+			) {
+				const calloutContent =
+					clickTarget.parentNode.parentNode.querySelector(
+						'[class="callout-content"]'
+					); //within <p> all links there
+				if (calloutContent != null) {
+					const linksToOpen = calloutContent.querySelectorAll(
+						'[class="external-link"]'
+					);
+					linksToOpen.forEach(function (curr) {
+						console.log(curr.innerHTML);
+						window.open(curr.innerHTML);
+					});
+				}
+			}
 		}
 	}
-
-	// on paste...
-	// identify if list of 2+ links or not (do I surround with button or not)
-	// are there 2+ lines
-	// does each line have a ://
-
-	// injectButtons(){
-	// 	this.addCopyButtons();
-	// }
-	//
-	// addCopyButtons(){
-	// 	const links_callouts = document.querySelectorAll('[data-callout="links"]');
-	// 	links_callouts.forEach(function (curr){
-	// 		const button = document.createElement('button');
-	// 		button.className = 'open-links-button';
-	// 		button.type = 'button';
-	// 		button.innerText = 'Open';
-	// 		button.addEventListener('click', function(){
-	// 			console.log("Click");
-	// 		});
-	// 		//curr.append(button); TODO race condition, just keeping adding. so this just keeps running...addCopyButtons needs to only run once on paste and once on page load...
-	//
-	// 	});
-	// }
-
-	// addCopyButtons(){
-	// 	document.querySelectorAll('[data-callout="links"]').forEach(function (codeBlock){
-	// 		var pre = codeBlock;//.parentNode;
-	// 		// Dont add more than once
-	// 		if (pre.parentNode.classList.contains('has-copy-button')) {
-	// 			return;
-	// 		}
-	// 		pre.parentNode.classList.add( 'has-copy-button' );
-	//
-	// 		pre.parentNode.addEventListener('click', function() {
-	// console.log("hello");
-	// var links = pre.getElementsByTagName("a");
-	// for(var i = 0;i<links.length;i++){
-	// 	window.open(links[i].getAttribute("href"));
-	// 	console.log('yo');
-	// }
-
-	// })
-	// var button = document.createElement('button');
-
-	// button.className = 'copy-code-button';
-	// button.type = 'button';
-	// button.innerText = 'Copy';
-	//
-	// button.addEventListener('click', function () {
-	// 	console.log("copy");
-	// 	// //pre child class "callout-content"
-	// 	// let content = pre.querySelector('[class="callout-content"]');
-	// 	// //window.open(url) for every url, but substring[1] to get rid of >
-	// 	// content.querySelectorAll('[class="external-link"]').forEach(function(yep){
-	// 	//
-	// 	// });
-	//
-	// });
-	//
-	// pre.append(button);
-	//pre.parentNode.append(button);
-
-	// 	});
-	// }
-	// addCopyButtons(){
-	// 	document.querySelectorAll('[data-callout="links"]').forEach(function (codeBlock){
-	// 		var pre = codeBlock;//.parentNode;
-	// 		// Dont add more than once
-	// 		if (pre.parentNode.classList.contains('has-copy-button')) {
-	// 			return;
-	// 		}
-	// 		pre.parentNode.classList.add( 'has-copy-button' );
-	//
-	// 		var button = document.createElement('button');
-	// 		button.className = 'copy-code-button';
-	// 		button.type = 'button';
-	// 		button.innerText = 'Copy';
-	//
-	// 		button.addEventListener('click', function () {
-	// 			console.log("copy");
-	// 			// //pre child class "callout-content"
-	// 			// let content = pre.querySelector('[class="callout-content"]');
-	// 			// //window.open(url) for every url, but substring[1] to get rid of >
-	// 			// content.querySelectorAll('[class="external-link"]').forEach(function(yep){
-	// 			//
-	// 			// });
-	//
-	// 		});
-	//
-	// 		pre.append(button);
-	// 		//pre.parentNode.append(button);
-	//
-	//
-	//
-	// 	});
-	// }
 
 	async pasteUrlList(clipboard: ClipboardEvent): Promise<void> {
 		const editor = this.getEditor();
