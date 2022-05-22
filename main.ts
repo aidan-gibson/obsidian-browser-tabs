@@ -74,7 +74,7 @@ export default class BrowserTabs extends Plugin {
 						'[class="external-link"]'
 					);
 					linksToOpen.forEach(function (curr) {
-						console.log(curr.innerHTML);
+						//console.log(curr.innerHTML);
 						window.open(curr.innerHTML);
 					});
 				}
@@ -86,7 +86,7 @@ export default class BrowserTabs extends Plugin {
 		const editor = this.getEditor();
 		if (!editor) return;
 		if (clipboard.clipboardData == null) {
-			console.log("clipboard.clipboardData==null");
+			//console.log("clipboard.clipboardData==null");
 			return;
 		}
 		const clipboardText = clipboard.clipboardData.getData("text/plain");
@@ -102,17 +102,17 @@ export default class BrowserTabs extends Plugin {
 			const checkLink = /:\/\//.exec(lines[i]); //if checkLink is null, :// wasn't found
 			if (checkLink == null && lines[i] != "" && lines[i] != "\n") {
 				//don't do it if there wasn't a :// with exception of empty line or \n
-				console.log(
-					"2+ lines, but a non-empty line !=\n doesn't have ://"
-				); //empty lines or lines with \n are acceptable
+				//console.log(
+				//	"2+ lines, but a non-empty line !=\n doesn't have ://"
+				//); //empty lines or lines with \n are acceptable
 				return; //if :// wasn't found AND it wasn't an empty line or a \n, cancel this entire function, it isn't a valid url list
 			}
 		}
-		console.log("Valid URL List."); //now surround it with button whatever
+		//console.log("Valid URL List."); //now surround it with button whatever
 		// We've decided to handle the paste, stop propagation to the default handler.
 		clipboard.stopPropagation();
 		clipboard.preventDefault();
-		let newPaste = ">[!LINKS]-\n";
+		let newPaste = "\n>[!LINKS]-\n";
 		for (let i = 0; i < lines.length; i++) {
 			if (lines[i] != "" && lines[i] != "\n") {
 				newPaste += "> [" + lines[i] + "](" + lines[i] + ")" + "\n";

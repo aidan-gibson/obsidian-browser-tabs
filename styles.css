@@ -1,0 +1,32 @@
+div[data-callout="links"] {
+	--callout-icon: link;
+
+}
+
+
+/*currently not possible to change parent style based on child attributes*/
+
+/*.cm-embed-block.markdown-rendered.cm-callout.show-indentation-guide div > div[data-callout="links"] {*/
+/*	padding-right: 50%;*/
+
+/*}*/
+
+
+/*.cm-embed-block.markdown-rendered.cm-callout.show-indentation-guide:has(option[data-callout="links"]) {*/
+/*	padding-right: 50%;*/
+
+/*}*/
+
+/*div:has([data-callout="links"]) {*/
+/*	padding-right: 50%;*/
+
+/*}*/
+
+/*.cm-embed-block.markdown-rendered.cm-callout.show-indentation-guide:has(div):has([data-callout]) {*/
+/*	padding-right: 50%;*/
+/*}*/
+
+/*.cm-embed-block:has(div[data-callout="links"]) {*/
+/*	padding-right: 50%;*/
+/*}*/
+/*div[data-callout="links"]*/
