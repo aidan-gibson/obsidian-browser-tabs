@@ -18,9 +18,14 @@ interface PasteFunction {
 	(this: HTMLElement, ev: ClipboardEvent): void;
 }
 
+interface Click {
+	(this: HTMLElement, ev: MouseEvent): void;
+}
+
 export default class BrowserTabs extends Plugin {
 	settings: BrowserTabsSettings;
 	pasteFunction: PasteFunction;
+	click: Click;
 
 	async onload() {
 		// this.registerInterval(
@@ -34,11 +39,44 @@ export default class BrowserTabs extends Plugin {
 		this.pasteFunction = this.pasteUrlList.bind(this);
 
 		this.registerEvent(
-			this.app.workspace.on("editor-paste", this.pasteFunction)
+			this.app.workspace.on("editor-paste", this.pasteFunction) //TODO obsid docs for "editor-paste" specify further instructions
 		);
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new BrowserTabsSettingTab(this.app, this));
+
+		//end paste part, begin opener part
+
+		// listen to click event
+		this.click = this.openUrlList.bind(this);
+
+		this.registerEvent(this.app.workspace.on("click", this.click));
+	}
+
+	async openUrlList(mouse: MouseEvent): Promise<void> {
+		// console.log("click");
+		// const match: string = '<div class="callout-title-inner">Links</div>';
+
+		const clickTarget = mouse.target as HTMLElement; //so intellisense will work (errors show up in IDE if I don't say as HTMLElement
+
+		if (
+			clickTarget.hasClass("callout-title-inner") &&
+			clickTarget.innerText == "Links"
+		) {
+			mouse.stopPropagation(); //vs stop immediate prop?
+			mouse.preventDefault();
+			const calloutContent =
+				clickTarget.parentNode.parentNode.querySelector(
+					'[class="callout-content"]'
+				); //within <p> all links there
+			const linksToOpen = calloutContent.querySelectorAll(
+				'[class="external-link"]'
+			);
+			linksToOpen.forEach(function (curr) {
+				console.log(curr.innerHTML);
+				window.open(curr.innerHTML);
+			});
+		}
 	}
 
 	// on paste...
