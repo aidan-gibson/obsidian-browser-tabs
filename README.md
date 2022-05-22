@@ -1,5 +1,6 @@
 ## TODO
 
+- [ ] mess with css more
 - [ ] settings.ts add one setting just to justify the settings page
 - [ ] should anything be try/catch?
 - [ ] automated tests

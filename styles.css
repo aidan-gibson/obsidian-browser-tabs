@@ -3,6 +3,16 @@ div[data-callout="links"] {
 
 }
 
+/*maybe??? i want SOME visual indication*/
+div[data-callout="links"]:hover {
+	-webkit-filter: invert(100%);
+
+}
+
+/*div[data-callout="links"] > .callout-title:hover {*/
+/*	-webkit-filter: invert(100%);*/
+
+/*}*/
 
 /*currently not possible to change parent style based on child attributes*/
 
