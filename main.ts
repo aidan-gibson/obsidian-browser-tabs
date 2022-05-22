@@ -115,7 +115,7 @@ export default class BrowserTabs extends Plugin {
 		let newPaste = ">[!LINKS]-\n";
 		for (let i = 0; i < lines.length; i++) {
 			if (lines[i] != "" && lines[i] != "\n") {
-				newPaste += ">" + lines[i] + "\n";
+				newPaste += "> [" + lines[i] + "](" + lines[i] + ")" + "\n";
 			}
 		}
 		editor.replaceSelection(newPaste);
