@@ -27,6 +27,11 @@
 			"error",
 			{
 				"selector": "variable",
+				"modifiers": ["const"],
+				"format": ["camelCase","UPPER_CASE"]
+			},
+			{
+				"selector": "variable",
 				"format": [
 					"camelCase"
 				]

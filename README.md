@@ -11,6 +11,11 @@ Change title of button
 
 Unique Appearance of Button (I don't think merely repurposing admonitions is good enough)
 
+When done,
+Make chrome extension, sends all tabs to obsid directly.
+i hit shortcut from chrome and start typing one of my obsid md notes and it autofills which note it is, it's
+searching/accessing my note titles to do so (alfred accesses the obsid search API somehow soooo)
+
 ## Deets
 
 Insert GIF/Video here of functionality.
