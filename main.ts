@@ -99,7 +99,8 @@ export default class BrowserTabs extends Plugin {
 
 		const lines = clipboardText.split("\n");
 		for (let i = 0; i < lines.length; i++) {
-			const checkLink = /:\/\//.exec(lines[i]); //if checkLink is null, :// wasn't found
+			// const checkLink = /:\/\//.exec(lines[i]); //if checkLink is null, :// wasn't found
+			const checkLink = /^(?!\s)(?:[^\s:]+:\/\/)+[^\s]*$/.exec(lines[i]);
 			if (checkLink == null && lines[i] != "" && lines[i] != "\n") {
 				//don't do it if there wasn't a :// with exception of empty line or \n
 				//console.log(
